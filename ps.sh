@@ -4,8 +4,18 @@
 # ~/Downloads.
 
 DIRECTORY=$HOME/Downloads/
+
 echo "\nFetching download link...\n"
-LINK=`wget -qO- 'https://confluence.jetbrains.com/display/PhpStorm/PhpStorm+Early+Access+Program' | grep -oP "(?<=<a href=\").*?(?=\.tar\.gz)" | awk '{print $0 ".tar.gz"}'`
+
+# fetches the link from the page via regex.
+# Looks for a href ending in .tar.gz.
+# Returns the full href
+
+LINK=`wget -qO- 'https://confluence.jetbrains.com/display/PhpStorm/PhpStorm+Early+Access+Program' \
+  | grep -oP "(?<=<a href=\").*?(?=\.tar\.gz)" \
+  | awk '{print $0 ".tar.gz"}'`
+
+# Get the filename of the tar.gz ready for extraction
 FILENAME=`basename "$LINK"`
 
 # check if the file exists before downloading
