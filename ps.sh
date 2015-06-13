@@ -16,18 +16,30 @@ LINK=`wget -qO- 'https://confluence.jetbrains.com/display/PhpStorm/PhpStorm+Earl
   | awk '{print $0 ".tar.gz"}'`
 
 # Get the filename of the tar.gz ready for extraction
-FILENAME=`basename "$LINK"`
+
+FILENAME=`basename $LINK`
 
 # check if the file exists before downloading
+
 if [ -f $DIRECTORY$FILENAME ];
 then
     echo You already have the latest  archive. Perhaps you forgot to extract it?
     exit 0
 fi
 
-echo "Downloading...      "
-wget -P "$DIRECTORY" --progress=dot "$LINK" 2>&1 | grep --line-buffered "%" | sed -u -e "s,\.,,g" | awk '{printf("\b\b\b\b%4s", $2)}'
+echo -n "Downloading...    "
+
+# Downloads the file. Parses the output from wget 
+# so it prints only the percentage completed
+
+wget -P $DIRECTORY --progress=dot $LINK 2>&1 \
+  | grep --line-buffered "%" \
+  | sed -u -e "s,\.,,g" \
+  | awk '{printf("\b\b\b\b%4s", $2)}'
+
+echo -ne "\b\b\b\b"
 echo "\nDone downloading\n"
+
 echo "Extracting...\n"
 #@todo check if folder exists before extracting
 #@todo report tar errors to user
