@@ -4,7 +4,6 @@
 # ~/Downloads.
 
 DIRECTORY=$HOME/Downloads/
-
 echo "\nFetching download link...\n"
 
 # fetches the link from the page via regex.
@@ -41,7 +40,21 @@ echo -ne "\b\b\b\b"
 echo "\nDone downloading\n"
 
 echo "Extracting...\n"
-#@todo check if folder exists before extracting
+
+# finds out what the first level directory is called
+
+MAIN_DIR=`tar -ztf $DIRECTORY$FILENAME --exclude '*/*/*' \
+  | head -n 1 \
+  | xargs dirname`
+
+# Checks if that directory already exists
+if [ -d $DIRECTORY$MAIN_DIR ];
+then
+    echo A directory with the expected name already exists. Perhaps \
+      you already have the latest version installed?
+    exit 0
+fi
+
 #@todo report tar errors to user
 tar -xf "$DIRECTORY$FILENAME" -C "$DIRECTORY"
 echo "Done extracting\n"
