@@ -55,8 +55,8 @@ then
     exit 0
 fi
 
-#@todo report tar errors to user
+#@todo report tar extraction errors to user
 tar -xf "$DIRECTORY$FILENAME" -C "$DIRECTORY"
 echo "Done extracting\n"
-#@todo delete zip after extracting
+#@todo add cleanup option to delete all old phpstorm zips and directories
 
