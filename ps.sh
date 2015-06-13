@@ -22,7 +22,8 @@ FILENAME=`basename $LINK`
 
 if [ -f $DIRECTORY$FILENAME ];
 then
-    echo You already have the latest  archive. Perhaps you forgot to extract it?
+    echo "$(tput setaf 2)You already have the latest archive.$(tput sgr0)"
+    echo "Perhaps you forgot to extract it?\n"
     exit 0
 fi
 
@@ -48,15 +49,21 @@ MAIN_DIR=`tar -ztf $DIRECTORY$FILENAME --exclude '*/*/*' \
   | xargs dirname`
 
 # Checks if that directory already exists
+
 if [ -d $DIRECTORY$MAIN_DIR ];
 then
-    echo A directory with the expected name already exists. Perhaps \
-      you already have the latest version installed?
+    echo "The directory $(tput setaf 2)$DIRECTORY$MAIN_DIR$(tput sgr0) already exists.\n"
     exit 0
 fi
 
 #@todo report tar extraction errors to user
+
+# extract the archive
+
 tar -xf "$DIRECTORY$FILENAME" -C "$DIRECTORY"
+
 echo "Done extracting\n"
+echo "New version can be found here: $(tput setaf 2)$DIRECTORY$MAIN_DIR$(tput sgr0)\n"
+
 #@todo add cleanup option to delete all old phpstorm zips and directories
 
