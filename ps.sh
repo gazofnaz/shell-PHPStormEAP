@@ -10,9 +10,20 @@ echo "\nFetching download link...\n"
 # Looks for a href ending in .tar.gz.
 # Returns the full href
 
-LINK=`wget -qO- 'https://confluence.jetbrains.com/display/PhpStorm/PhpStorm+Early+Access+Program' \
+JET_URL='https://confluence.jetbrains.com/display/PhpStorm/PhpStorm+Early+Access+Program'
+
+LINK=`wget -qO- $JET_URL \
   | grep -oP "(?<=<a href=\").*?(?=\.tar\.gz)" \
   | awk '{print $0 ".tar.gz"}'`
+
+# check link was found. sometimes the page changes during milestone releases
+
+if [ -z  $LINK  ];
+then
+    echo "Could not find a valid EAP link at:"
+    echo $(tput setaf 2)$JET_URL$(tput sgr0)
+    exit 0
+fi
 
 # Get the filename of the tar.gz ready for extraction
 
