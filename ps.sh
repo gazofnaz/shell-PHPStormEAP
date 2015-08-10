@@ -13,7 +13,7 @@ echo "\nFetching download link...\n"
 JET_URL='https://confluence.jetbrains.com/display/PhpStorm/PhpStorm+Early+Access+Program'
 
 LINK=`wget -qO- $JET_URL \
-  | grep -oP "(?<=<a href=\").*?(?=\.tar\.gz)" \
+  | grep -oP "(?<=<p>Unix<\/p><\/td><td class=\"confluenceTd\"><p><a href=\").*?(?=\.tar\.gz\")" \
   | awk '{print $0 ".tar.gz"}'`
 
 # check link was found. sometimes the page changes during milestone releases
